@@ -33,7 +33,7 @@ in memory with no temp files written to disk.
 
 ### Platform
 - **Modern web interface** — three-mode UI with drag-and-drop upload, file queues, and bulk download
-- **Batteries included** — ImageMagick, FFmpeg, and Pandoc binaries are bundled in the `bin/` folder; no additional software needed
+- **Cross-platform** — runs on Windows, macOS, and Linux; auto-discovers ImageMagick, FFmpeg, and Pandoc from system PATH or default install locations
 - **Pluggable format architecture** — add new formats without touching core code
 - **Security hardened** — HMAC-signed session tokens, IP + device fingerprint binding, SSRF protection with DNS rebinding defense, rate limiting, strict CSP
 - **Embedded web assets** — HTML, CSS, JS compiled into the binary via `go:embed`
@@ -44,6 +44,18 @@ in memory with no temp files written to disk.
 ### Prerequisites
 
 - [Go](https://go.dev/) 1.25 or later
+
+**Optional tools** (only needed for advanced file conversion):
+
+| Tool | Install | Used For |
+|------|---------|----------|
+| [ImageMagick](https://imagemagick.org/) | `brew install imagemagick` · `apt install imagemagick` · [Windows installer](https://imagemagick.org/script/download.php) | Image format conversion (SVG, HEIC, AVIF, ICO, etc.) |
+| [FFmpeg](https://ffmpeg.org/) | `brew install ffmpeg` · `apt install ffmpeg` · [Windows builds](https://github.com/BtbN/FFmpeg-Builds/releases) | Audio/Video conversion |
+| [Pandoc](https://pandoc.org/) | `brew install pandoc` · `apt install pandoc` · [Windows installer](https://github.com/jgm/pandoc/releases) | Document conversion (DOCX, EPUB, etc.) |
+
+The converter auto-detects these tools from the system PATH or common install
+locations. Without them, TNEF extraction, bank formatting, PDF text extraction,
+and basic image conversion (PNG, JPEG, GIF, BMP, TIFF, WebP) still work.
 
 ### Running the Server
 
@@ -74,10 +86,6 @@ make clean    # Remove bin/ and build artifacts
 
 ```
 converter
-├── bin/                 Bundled tool directories (committed to repo)
-│   ├── ffmpeg/          FFmpeg executable + shared libraries
-│   ├── imagemagick/     ImageMagick executable + DLLs
-│   └── pandoc/          Pandoc executable
 ├── cmd/converter/       Web server entry point
 ├── cmd/inspect/         Low-level TNEF diagnostic tool
 ├── deploy/              Seccomp profile + deployment configs
@@ -97,17 +105,6 @@ converter
 
 - [excelize/v2](https://github.com/xuri/excelize) — Excel (.xlsx) read/write for bank file formatting
 - [golang.org/x/image](https://pkg.go.dev/golang.org/x/image) — Extended image format support
-
-### Bundled Tools
-
-The following tools are already included in the `bin/` directory — no separate
-installation required:
-
-| Tool | Version | Used For |
-|------|---------|----------|
-| ImageMagick | 7.1.2 Q16-HDRI | Image format conversion |
-| FFmpeg | Latest GPL shared | Audio/Video conversion |
-| Pandoc | 3.9 | Document conversion |
 
 ### Pluggable Format System
 

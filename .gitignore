@@ -1,15 +1,7 @@
-# Binaries — ignore compiled Go output but keep bundled tool directories
-bin/converter
-bin/converter.exe
+# Go build output
 /converter
 converter-*
 *.exe
-# Allow the bundled tool executables in bin/ subdirectories
-!bin/
-!bin/*/
-!bin/**/*.exe
-!bin/**/*.dll
-!bin/README.md
 
 # Test output
 out/

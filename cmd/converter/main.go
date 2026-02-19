@@ -42,13 +42,14 @@ Examples:
 }
 
 func main() {
-	if len(os.Args) < 2 {
-		usage()
-		os.Exit(1)
-	}
+	// Default to "serve" when launched with no arguments (e.g. double-click).
+	cmd := "serve"
+	var args []string
 
-	cmd := strings.ToLower(os.Args[1])
-	args := os.Args[2:]
+	if len(os.Args) >= 2 {
+		cmd = strings.ToLower(os.Args[1])
+		args = os.Args[2:]
+	}
 
 	switch cmd {
 	case "help", "-h", "--help":

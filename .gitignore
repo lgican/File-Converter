@@ -2,6 +2,8 @@
 /converter
 converter-*
 *.exe
+dist/
+
 
 # Test output
 out/

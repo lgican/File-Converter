@@ -17,7 +17,9 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
+	"runtime"
 	"strconv"
 	"strings"
 	"sync"
@@ -306,17 +308,25 @@ func cmdServe(port, basePath string) {
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
+	url := "http://localhost" + addr + basePath + "/"
+
 	go func() {
 		slog.Info("server starting",
 			"version", version,
 			"addr", addr,
 			"basePath", basePath,
-			"url", "http://localhost"+addr+basePath+"/",
+			"url", url,
 		)
 		if err := srv.ListenAndServe(); err != http.ErrServerClosed {
 			slog.Error("server failed", "error", err)
 			os.Exit(1)
 		}
+	}()
+
+	// Auto-open the browser after a short delay to let the server start.
+	go func() {
+		time.Sleep(500 * time.Millisecond)
+		openBrowser(url)
 	}()
 
 	<-stop
@@ -1002,4 +1012,18 @@ func handleFileConvertConvert(store *sessionStore, limiter *rateLimiter, hmacKey
 			Files:        files,
 		})
 	}
+}
+
+// openBrowser launches the default web browser to the given URL.
+func openBrowser(url string) {
+	var cmd *exec.Cmd
+	switch runtime.GOOS {
+	case "windows":
+		cmd = exec.Command("rundll32", "url.dll,FileProtocolHandler", url)
+	case "darwin":
+		cmd = exec.Command("open", url)
+	default: // linux, freebsd, etc.
+		cmd = exec.Command("xdg-open", url)
+	}
+	_ = cmd.Start()
 }

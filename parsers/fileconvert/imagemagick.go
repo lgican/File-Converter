@@ -95,6 +95,11 @@ func (c *imagemagickConverter) Convert(req ConversionRequest) (*ConversionResult
 		args = append(args, "-quality", fmt.Sprintf("%d", req.Quality))
 	}
 
+	// ICO format is limited to 256×256 — resize large images down
+	if to == "ico" {
+		args = append(args, "-resize", "256x256>")
+	}
+
 	args = append(args, fmt.Sprintf("%s:-", to)) // Write to stdout
 
 	// Execute ImageMagick with data piped through stdin/stdout (no temp files)

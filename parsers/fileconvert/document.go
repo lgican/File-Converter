@@ -20,6 +20,8 @@ func (c *documentConverter) Name() string {
 func (c *documentConverter) SupportedFormats() []Format {
 	return []Format{
 		{Extension: ".docx", MimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", Category: CategoryDocument, Name: "Word Document"},
+		{Extension: ".pptx", MimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation", Category: CategoryDocument, Name: "PowerPoint"},
+		{Extension: ".xlsx", MimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Category: CategoryDocument, Name: "Excel Spreadsheet"},
 		{Extension: ".odt", MimeType: "application/vnd.oasis.opendocument.text", Category: CategoryDocument, Name: "OpenDocument Text"},
 		{Extension: ".rtf", MimeType: "application/rtf", Category: CategoryDocument, Name: "Rich Text Format"},
 		{Extension: ".txt", MimeType: "text/plain", Category: CategoryDocument, Name: "Plain Text"},
@@ -52,6 +54,11 @@ func (c *documentConverter) CanConvert(from, to string) bool {
 
 	// Pandoc cannot produce PDF without a PDF engine (wkhtmltopdf/LaTeX)
 	if to == ".pdf" {
+		return false
+	}
+
+	// Pandoc cannot produce XLSX output
+	if to == ".xlsx" {
 		return false
 	}
 
@@ -122,6 +129,8 @@ func getPandocInputFormat(ext string) string {
 		".csv":  "csv",
 		".tsv":  "tsv",
 		".xml":  "docbook",
+		".pptx": "pptx",
+		".xlsx": "xlsx",
 	}
 
 	if format, ok := formats[ext]; ok {
@@ -145,6 +154,7 @@ func getPandocOutputFormat(ext string) string {
 		".csv":  "csv",
 		".tsv":  "tsv",
 		".xml":  "docbook",
+		".pptx": "pptx",
 	}
 
 	if format, ok := formats[ext]; ok {
@@ -170,6 +180,8 @@ func getDocumentMimeType(ext string) string {
 		".csv":  "text/csv",
 		".tsv":  "text/tab-separated-values",
 		".xml":  "application/xml",
+		".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+		".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 	}
 
 	if mime, ok := mimeTypes[ext]; ok {

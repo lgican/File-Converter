@@ -15,7 +15,8 @@ in memory with no temp files written to disk.
 ### File Converter
 - **Image conversion** — PNG, JPEG, GIF, BMP, TIFF, WebP, ICO, SVG, HEIC, AVIF, and more (via ImageMagick)
 - **Audio/Video conversion** — MP3, WAV, FLAC, OGG, AAC, MP4, MKV, AVI, WebM, MOV, and more (via FFmpeg)
-- **Document conversion** — Markdown, DOCX, HTML, TXT, RTF, ODT, EPUB, and more (via Pandoc)
+- **Document conversion** — Markdown, DOCX, PPTX, HTML, TXT, RTF, ODT, EPUB, and more (via Pandoc)
+- **Spreadsheet conversion** — XLSX ↔ CSV (pure Go, no external tools needed)
 - **PDF text extraction** — pure Go, no external tools needed
 - **Batch conversion** — queue multiple files and convert them all at once
 
@@ -95,7 +96,7 @@ converter
 │   └── tnef/            TNEF format implementation
 ├── parsers/             Format-specific parsers
 │   ├── bank/            CSV/Excel parsing, templates, fixed-width/CSV/XLSX output
-│   ├── fileconvert/     Image, audio/video, document, PDF converters + binary discovery
+│   ├── fileconvert/     Image, audio/video, document, spreadsheet, PDF converters + binary discovery
 │   └── tnef/            TNEF parser (MAPI, LZFu RTF, de-encapsulation)
 └── web/                 Embedded static assets (go:embed)
     └── static/          HTML, CSS, JS served by the web UI
@@ -103,7 +104,7 @@ converter
 
 ### Dependencies
 
-- [excelize/v2](https://github.com/xuri/excelize) — Excel (.xlsx) read/write for bank file formatting
+- [excelize/v2](https://github.com/xuri/excelize) — Excel (.xlsx) read/write for bank formatting and spreadsheet conversion
 - [golang.org/x/image](https://pkg.go.dev/golang.org/x/image) — Extended image format support
 
 ### Pluggable Format System

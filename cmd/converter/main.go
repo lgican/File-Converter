@@ -7,9 +7,9 @@ import (
 	"os"
 	"strings"
 
-	_ "github.com/avaropoint/converter/formats/bank"
-	_ "github.com/avaropoint/converter/formats/fileconvert"
-	_ "github.com/avaropoint/converter/formats/tnef"
+	_ "github.com/lgican/File-Converter/formats/bank"
+	_ "github.com/lgican/File-Converter/formats/fileconvert"
+	_ "github.com/lgican/File-Converter/formats/tnef"
 )
 
 // version is the application version, embedded in API responses and used

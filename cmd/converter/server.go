@@ -25,11 +25,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/avaropoint/converter/formats"
-	fileconvertformat "github.com/avaropoint/converter/formats/fileconvert"
-	bankparser "github.com/avaropoint/converter/parsers/bank"
-	fileconvertparser "github.com/avaropoint/converter/parsers/fileconvert"
-	"github.com/avaropoint/converter/web"
+	"github.com/lgican/File-Converter/formats"
+	fileconvertformat "github.com/lgican/File-Converter/formats/fileconvert"
+	bankparser "github.com/lgican/File-Converter/parsers/bank"
+	fileconvertparser "github.com/lgican/File-Converter/parsers/fileconvert"
+	"github.com/lgican/File-Converter/web"
 )
 
 // session holds the extracted files for a single conversion.
@@ -726,12 +726,6 @@ func handleBankTemplates(w http.ResponseWriter, r *http.Request) {
 	
 	templates := bankparser.GetTemplateList()
 	json.NewEncoder(w).Encode(templates)
-}
-
-// bankConvertRequest is the JSON payload for bank file conversion.
-type bankConvertRequest struct {
-	Template string `json:"template"`
-	CSVData  string `json:"csvData"`
 }
 
 // handleBankConvert processes CSV/Excel data and converts it to the selected output format.

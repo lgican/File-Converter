@@ -7,8 +7,8 @@ import (
 	"encoding/binary"
 	"strings"
 
-	"github.com/avaropoint/converter/formats"
-	parser "github.com/avaropoint/converter/parsers/tnef"
+	"github.com/lgican/File-Converter/formats"
+	parser "github.com/lgican/File-Converter/parsers/tnef"
 )
 
 const tnefSignature = 0x223e9f78

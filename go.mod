@@ -1,4 +1,4 @@
-module github.com/avaropoint/converter
+module github.com/lgican/File-Converter
 
 go 1.25.6
 

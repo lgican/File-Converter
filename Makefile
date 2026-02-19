@@ -1,4 +1,4 @@
-.PHONY: build test vet lint clean run docker
+.PHONY: build test vet lint clean run
 
 # Default binary name
 BINARY := bin/converter
@@ -36,10 +36,6 @@ run: build
 clean:
 	rm -rf bin/
 	rm -rf out/
-
-## docker: Build Docker image
-docker:
-	docker build -t converter:$(VERSION) .
 
 ## install: Install to $GOPATH/bin
 install:

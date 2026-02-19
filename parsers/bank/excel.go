@@ -40,7 +40,7 @@ func DecodeExcelWithTemplate(data []byte, template Template) (*BankFile, error) 
 	}
 
 	if len(rows) < 2 {
-		return nil, fmt.Errorf("Excel file must have a header row and at least one data row")
+		return nil, fmt.Errorf("excel file must have a header row and at least one data row")
 	}
 
 	// First row is header

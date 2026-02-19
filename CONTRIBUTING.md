@@ -7,7 +7,7 @@ Thank you for your interest in contributing! This project is free and open sourc
 
 ### Reporting Bugs
 
-Open a [GitHub Issue](https://github.com/avaropoint/converter/issues) with:
+Open a [GitHub Issue](https://github.com/lgican/File-Converter/issues) with:
 - A clear title and description
 - Steps to reproduce the problem
 - The file format you were converting (if applicable)
@@ -34,7 +34,7 @@ Create a new package under `formats/` that implements the `formats.Converter` in
 ```go
 package myformat
 
-import "github.com/avaropoint/converter/formats"
+import "github.com/lgican/File-Converter/formats"
 
 func init() {
     formats.Register(&converter{})
@@ -54,7 +54,7 @@ func (c *converter) Convert(data []byte) ([]formats.ConvertedFile, error) {
 Then add a blank import in `cmd/converter/main.go`:
 
 ```go
-import _ "github.com/avaropoint/converter/formats/myformat"
+import _ "github.com/lgican/File-Converter/formats/myformat"
 ```
 
 ## Code Style
@@ -67,8 +67,8 @@ import _ "github.com/avaropoint/converter/formats/myformat"
 ## Development Setup
 
 ```bash
-git clone https://github.com/avaropoint/converter.git
-cd converter
+git clone https://github.com/lgican/File-Converter.git
+cd File-Converter
 make build     # Build the binary
 make test      # Run tests
 make vet       # Run go vet

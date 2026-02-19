@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"testing"
 
-	"github.com/avaropoint/converter/formats"
+	"github.com/lgican/File-Converter/formats"
 )
 
 func TestConverterName(t *testing.T) {

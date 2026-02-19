@@ -3,8 +3,8 @@
 package fileconvert
 
 import (
-	"github.com/avaropoint/converter/formats"
-	parser "github.com/avaropoint/converter/parsers/fileconvert"
+	"github.com/lgican/File-Converter/formats"
+	parser "github.com/lgican/File-Converter/parsers/fileconvert"
 )
 
 func init() {

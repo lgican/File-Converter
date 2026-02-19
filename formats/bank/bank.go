@@ -5,8 +5,8 @@ package bank
 import (
 	"strings"
 
-	"github.com/avaropoint/converter/formats"
-	parser "github.com/avaropoint/converter/parsers/bank"
+	"github.com/lgican/File-Converter/formats"
+	parser "github.com/lgican/File-Converter/parsers/bank"
 )
 
 func init() {

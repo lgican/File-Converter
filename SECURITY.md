@@ -12,7 +12,7 @@ If you discover a security vulnerability, please report it responsibly:
 
 1. **Do NOT open a public issue**
 2. Email security concerns to the repository maintainers via GitHub's
-   [private vulnerability reporting](https://github.com/avaropoint/converter/security/advisories/new)
+   [private vulnerability reporting](https://github.com/lgican/File-Converter/security/advisories/new)
 3. Include a clear description of the vulnerability and steps to reproduce
 
 We will acknowledge receipt within 48 hours and aim to provide a fix within 7 days
@@ -75,38 +75,9 @@ Converter is a file parsing and extraction tool. Its security posture:
 - **TLS**: The built-in server uses plain HTTP. Use a reverse proxy (nginx, Caddy)
   to terminate TLS in production.
 
-### Container Sandbox (Defense in Depth)
-
-The Docker deployment provides a hardened, multi-layer sandbox:
-
-| Layer | Control | What It Prevents |
-|-------|---------|-------------------|
-| **Base image** | `scratch` (zero OS) | No shell, no utilities, no package manager — nothing to exploit |
-| **User** | UID 65534 (nobody) | No root access even if code is compromised |
-| **Filesystem** | `read_only: true` | Cannot write malware, modify binaries, or create files |
-| **Capabilities** | `cap_drop: ALL` | No raw sockets, no mount, no ptrace, no kernel interaction |
-| **Privilege** | `no-new-privileges` | Blocks SUID/SGID escalation |
-| **Syscalls** | Custom seccomp profile | Only ~40 Go-required syscalls whitelisted; all others denied |
-| **Memory** | 256 MB limit | OOM/memory exhaustion cannot consume host RAM |
-| **CPU** | 1.0 core limit | CPU exhaustion cannot slow the host |
-| **PIDs** | 64 process limit | Fork bombs are impossible |
-| **File descriptors** | 1024 soft / 4096 hard | Descriptor exhaustion blocked |
-| **tmpfs** | 16 MB, noexec, nosuid, nodev | Ephemeral, non-executable, vanishes on restart |
-| **Logs** | Capped at 30 MB (3 × 10 MB) | Log flooding cannot fill host disk |
-| **Health** | Built-in `healthcheck` command | No wget/curl needed in the image |
-
-Even a theoretical RCE through a parser bug would give an attacker:
-- A read-only filesystem with zero capabilities
-- No shell, no package manager, no scripting runtime
-- An ephemeral 16 MB tmpfs that vanishes on restart
-- No access to the host filesystem or other containers
-- Only ~40 permitted syscalls — cannot spawn processes, mount filesystems, or use raw sockets
-
 ### Production Deployment Recommendations
 
-1. Run via `docker compose up` (inherits all sandbox controls)
-2. Place behind a reverse proxy with TLS termination (nginx, Caddy)
-3. Add authentication if the server is internet-facing
-4. Set appropriate firewall rules to restrict access
-5. Monitor logs for unusual activity
-6. For maximum isolation, add `network_mode: internal` to restrict egress
+1. Place behind a reverse proxy with TLS termination (nginx, Caddy)
+2. Add authentication if the server is internet-facing
+3. Set appropriate firewall rules to restrict access
+4. Monitor logs for unusual activity

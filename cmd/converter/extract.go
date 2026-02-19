@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/avaropoint/converter/formats"
+	"github.com/lgican/File-Converter/formats"
 )
 
 // convertFile reads a file, auto-detects its format, and returns the

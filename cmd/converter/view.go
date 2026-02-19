@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/avaropoint/converter/formats"
-	"github.com/avaropoint/converter/parsers/tnef"
+	"github.com/lgican/File-Converter/formats"
+	"github.com/lgican/File-Converter/parsers/tnef"
 )
 
 // cmdView decodes a TNEF file and prints its structure to stdout.

@@ -1,0 +1,36 @@
+# Binaries
+bin/
+/converter
+converter-*
+*.exe
+
+# Test output
+out/
+/tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# User data — never commit uploaded or test files
+data/
+*.dat
+*.tnef
+*.eml
+
+# Test artifacts
+test_input.txt
+test_output.json
+
+# Go build cache (usually outside repo, but just in case)
+vendor/
+
+# Docker
+.env

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="color-scheme" content="light dark">
+<title>Converter</title>
+<link rel="stylesheet" href="static/css/style.css?v=19">
+</head>
+<body>
+
+<div class="brand">
+  <div class="brand-icon">
+    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+  </div>
+  <h1>Converter</h1>
+</div>
+<p class="subtitle">Drop a file to convert and extract its contents</p>
+
+<!-- Converter Mode Switcher -->
+<div class="mode-switcher">
+  <button class="mode-btn active" data-mode="fileconvert" id="fileConvertModeBtn">File Converter</button>
+  <button class="mode-btn" data-mode="bank" id="bankModeBtn">Bank File Formatter</button>
+  <button class="mode-btn" data-mode="tnef" id="tnefModeBtn">Winmail.dat Extractor</button>
+</div>
+
+<!-- TNEF Converter Container -->
+<div class="container hidden" id="tnefContainer">
+  <div class="conversion-box">
+  <div class="file-queue-section">
+    <div class="queue-header">
+      <h3>File to Extract (<span id="tnefQueueCount">0</span>)</h3>
+      <button class="add-more-btn" id="tnefAddMoreBtn">+ Add File</button>
+    </div>
+    <div class="queue-list" id="tnefQueueList"></div>
+
+    <div class="dropzone" id="dropzone">
+      <div class="dropzone-graphic">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <p class="dropzone-text">Drop your file here</p>
+      <p class="dropzone-hint">or <span class="browse" id="browseBtn">browse to select</span></p>
+      <input type="file" id="fileInput">
+    </div>
+
+    <button class="convert-all-btn" id="tnefConvertBtn" disabled>Extract File</button>
+  </div>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="success-state" id="successState">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <p>Done — extracted your files</p>
+  </div>
+
+  <div class="results hidden" id="results">
+    <div class="results-header">
+      <h2>Extracted <span class="file-count" id="fileCount">0</span></h2>
+      <a class="download-all" id="downloadAll" href="#">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download All
+      </a>
+    </div>
+    <ul class="file-list" id="fileList"></ul>
+  </div>
+
+  <button class="reset-btn" id="resetBtn">Convert another file</button>
+</div>
+
+<!-- Bank File Converter Container -->
+<div class="container hidden" id="bankContainer">
+  <div class="bank-converter">
+    <div class="conversion-box">
+      <div class="template-selector-inline">
+        <label for="templateSelect">Select Bank File Template:</label>
+        <select id="templateSelect" class="template-select">
+          <option value="">Loading templates...</option>
+        </select>
+      </div>
+
+      <div class="template-selector-inline">
+        <label for="bankOutputFormat">Output Format:</label>
+        <select id="bankOutputFormat" class="template-select">
+          <option value="txt">Fixed-Width Text (.txt)</option>
+          <option value="csv">CSV (.csv)</option>
+          <option value="xlsx">Excel (.xlsx)</option>
+        </select>
+      </div>
+
+      <div class="file-queue-section">
+        <div class="queue-header">
+          <h3>File to Convert (<span id="bankQueueCount">0</span>)</h3>
+          <button class="add-more-btn" id="bankAddMoreBtn">+ Add File</button>
+        </div>
+        <div class="queue-list" id="bankQueueList"></div>
+
+        <div class="bank-dropzone" id="bankDropzone">
+          <div class="dropzone-graphic">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <p class="dropzone-text">Drop your CSV or Excel file here</p>
+          <p class="dropzone-hint">or <span class="browse" id="bankBrowseBtn">browse to select</span></p>
+          <input type="file" id="bankFileInput" accept=".csv,.xlsx,.xls">
+        </div>
+
+        <button class="convert-all-btn" id="bankConvertBtn" disabled>Convert File</button>
+      </div>
+    </div>
+
+    <div class="status" id="bankStatus"></div>
+
+    <div class="success-state" id="bankSuccessState">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p>Done — converted your bank file</p>
+    </div>
+
+    <div class="results hidden" id="bankResults">
+      <div class="results-header">
+        <h2>Converted <span class="file-count" id="bankFileCount">0</span></h2>
+        <a class="download-all" id="bankDownloadAll" href="#">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download All
+        </a>
+      </div>
+      <ul class="file-list" id="bankFileList"></ul>
+    </div>
+
+    <button class="reset-btn" id="bankResetBtn">Convert another file</button>
+  </div>
+</div>
+
+<!-- File Converter Container -->
+<div class="container" id="fileConvertContainer">
+  <div class="file-converter">
+    <!-- Combined Conversion Box -->
+    <div class="conversion-box">
+      <div class="format-selector-grid">
+        <div class="format-group">
+          <div class="format-menu" id="fromFormatMenu"></div>
+          <select id="fromFormatSelect" class="format-select">
+            <option value="">Auto-detect format</option>
+          </select>
+        </div>
+        <div class="format-group">
+          <div class="format-menu" id="toFormatMenu"></div>
+          <select id="toFormatSelect" class="format-select">
+            <option value="">Select output format...</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- File Queue -->
+      <div class="file-queue-section">
+        <div class="queue-header">
+          <h3>Files Ready to Convert (<span id="queueCount">0</span>)</h3>
+          <button class="add-more-btn" id="addMoreBtn">+ Add Files</button>
+        </div>
+        <div class="queue-list" id="queueList">
+          <!-- Queue items will be added here -->
+        </div>
+
+        <div class="file-dropzone" id="fileConvertDropzone">
+          <div class="dropzone-graphic">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <p class="dropzone-text">Drop your file here</p>
+          <p class="dropzone-hint">or <span class="browse" id="fileConvertBrowseBtn">browse to select</span></p>
+          <input type="file" id="fileConvertFileInput" multiple>
+        </div>
+
+        <button class="convert-all-btn" id="convertAllBtn">Convert All Files</button>
+      </div>
+    </div>
+    </div>
+
+    <div class="status" id="fileConvertStatus"></div>
+
+    <div class="success-state" id="fileConvertSuccessState">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p>Done — converted your file</p>
+    </div>
+
+    <div class="results hidden" id="fileConvertResults">
+      <div class="results-header">
+        <h2>Converted <span class="file-count" id="fileConvertFileCount">0</span></h2>
+        <a class="download-all" id="fileConvertDownloadAll" href="#">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download All
+        </a>
+      </div>
+      <ul class="file-list" id="fileConvertFileList"></ul>
+    </div>
+
+    <button class="reset-btn" id="fileConvertResetBtn">Convert another file</button>
+  </div>
+</div>
+
+<footer>
+  <span id="versionLabel">converter</span>
+  <span class="dot"></span>
+  <span>Files are processed in memory and auto-deleted after 10 min</span>
+</footer>
+
+<script src="static/js/app.js?v=19"></script>
+</body>
+</html>

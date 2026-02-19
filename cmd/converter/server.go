@@ -276,6 +276,13 @@ func cmdServe(port, basePath string) {
 	mux.HandleFunc("/api/files/", handleFile(store, hmacKey, fileLimiter))
 	mux.HandleFunc("/api/zip/", handleZip(store, hmacKey, fileLimiter))
 
+	// Graceful shutdown on SIGINT / SIGTERM.
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+
+	// Release-mode features (heartbeat shutdown, etc.) — no-op in dev builds.
+	setupRelease(mux, stop)
+
 	// Serve embedded static assets (CSS, JS) under /static/ with cache headers.
 	staticContent, _ := fs.Sub(web.StaticFS, "static")
 	mux.Handle("/static/", cacheHeaders(
@@ -303,10 +310,6 @@ func cmdServe(port, basePath string) {
 		IdleTimeout:       120 * time.Second,
 		MaxHeaderBytes:    1 << 20, // 1 MB
 	}
-
-	// Graceful shutdown on SIGINT / SIGTERM.
-	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
 	url := "http://localhost" + addr + basePath + "/"
 
@@ -431,6 +434,9 @@ func handleIndex(basePath string) http.HandlerFunc {
 			"<base href=\""+baseHref+"\">\n<title>Converter</title>", 1)
 		html = strings.ReplaceAll(html, "static/css/style.css", "static/css/style.css?v="+version)
 		html = strings.ReplaceAll(html, "static/js/app.js", "static/js/app.js?v="+version)
+
+		// In release builds, inject heartbeat script before </body>.
+		html = injectReleaseScript(html)
 
 		w.Write([]byte(html))
 	}
